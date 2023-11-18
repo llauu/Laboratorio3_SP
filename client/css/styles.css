@@ -1,0 +1,187 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+#img-icono {
+	width: 50px;
+	height: 50px;
+}
+
+#seccion-principal {
+    background-image: url('../assets/imagen-fondo.jpg');
+    background-size: cover; 
+    background-position: center; 
+	height: 100vh;
+}
+
+#contenedor-titulo {
+	color: white;
+	margin-top: 32vh;
+	text-shadow: rgb(40, 19, 42) 10px 0 10px;
+	font-family: 'Jolly Lodger';
+}
+
+#contenedor-titulo h1 {
+	font-size: 9em;
+	font-weight: bold;
+}
+
+#contenedor-titulo h2 {
+	font-size: 3em;
+}
+
+#seccion-crud {
+	height: 100vh;
+	background-color: rgb(167, 71, 252);
+	box-shadow: rgb(167, 71, 252) 0px 0 10px;
+}
+
+#info-monstruo {
+	background-color: #2b3134;
+	color: white;
+	width: 50vw;
+	height: 78vh;
+	margin-top: 10vh;
+	padding: 2rem 4rem;
+	box-shadow: #2b3134 0px 0 14px;
+	border-radius: 7px;
+}
+
+#titulo-info {
+	font-size: 40px;
+}
+
+.labelsInfo {
+	font-size: 20px;
+}
+
+#loader {
+	width: 120px;
+}
+
+.oculto {
+	display: none !important;
+}
+
+#seccion-monstruos {
+	background-color: rgb(167, 71, 252);
+	box-shadow: rgb(167, 71, 252) 0px 0 10px;
+}
+
+#titulo-lista {
+	color: white;
+	font-size: 40px;
+	margin-top: 4vh;
+	margin-bottom: 1vh;
+	background-color: #2b3134;
+	box-shadow: #2b3134 0px 0 14px;
+	border-radius: 7px;
+	padding: 1rem;
+}
+
+.cabezera {
+	font-weight: bold;
+	border: 1px solid #2b3134;
+}
+
+.filaMonstruo {
+	background-color: #f0f0f0;
+	color: #2b3134;
+	border: 1px solid #2b3134;
+}
+
+.filaMonstruo td {
+	padding: 0.5rem;
+}
+
+.footer {
+	background-color: #2b3134; 
+	color: #7c7f82;
+}
+
+#seccion-cards {
+	background-color: rgb(167, 71, 252);
+	padding-bottom: 10vh;
+}
+
+#titulo-cards {
+	color: white;
+	display: inline;
+	font-size: 40px;
+	margin-top: 8vh;
+	margin-bottom: 1vh;
+	background-color: #2b3134;
+	box-shadow: #2b3134 0px 0 14px;
+	border-radius: 7px;
+	padding: 1rem;
+}
+
+.cardMonstruo {
+	width: 15rem !important; 
+}
+
+@media screen and (max-width: 427px) {
+	#contenedor-titulo h1 {
+	  	font-size: 4.2em; 
+	}
+
+	#contenedor-titulo h2 {
+		font-size: 1.8em;
+	}
+
+	#info-monstruo {
+		padding: 1rem;
+		width: 100px;
+		height: 90vh !important;
+		margin-top: 13vh !important;
+	}
+	
+	#titulo-info, 
+	#titulo-lista {
+		font-size: 30px;
+	}
+
+	#titulo-cards {
+		font-size: 30px;
+	}
+
+	#div-seccion-monstruos {
+		padding-top: 8vh !important;
+	}
+
+	.labelsInfo {
+		font-size: 16px;
+	}
+}
+
+@media screen and (max-width: 1450px) {
+	#contenedor-titulo h1 {
+	  font-size: 4.2em; 
+	}
+
+	#contenedor-titulo h2 {
+		font-size: 2em;
+	}
+
+	#info-monstruo {
+		margin-top: 20vh;
+		padding: 2rem;
+		width: 75vw;
+		height: 97vh;
+	}
+	
+	#titulo-lista {
+		margin-top: 14vh;
+	}
+
+	#div-seccion-monstruos {
+		padding-top: 25vh;
+	}
+
+	#titulo-info, 
+	#titulo-lista {
+		font-size: 30px;
+	}
+}
