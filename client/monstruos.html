@@ -100,8 +100,9 @@
 
                     <div class="container">
                         <div class="row d-flex justify-content-around">
-                            <button type="reset" id="btnCancelar" class="btn btn-danger mt-3 col-xl-3 ml-auto">Cancelar</button>
-                            <button type="submit" id="btnGuardar" class="btn btn-primary mt-3 col-xl-3 ml-auto">Guardar</button>
+                            <button type="reset" id="btnCancelar" class="btn btn-secondary mt-3 mx-1 col-xl-3 col-md-3 ml-auto oculto"><i class="fa-solid fa-ban me-1"></i>Cancelar</button>
+                            <button type="submit" id="btnEliminar" class="btn btn-danger mt-3 mx-1 col-xl-3 col-md-3 ml-auto oculto"><i class="fa-solid fa-trash me-1"></i>Eliminar</button>
+                            <button type="submit" id="btnGuardar" class="btn btn-primary mt-3 mx-1 col-xl-3 col-md-3 ml-auto"><i class="fa-solid fa-floppy-disk me-1"></i>Guardar</button>
                         </div>
                     </div>
                 </form>
@@ -155,10 +156,10 @@
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#monstruos">Monstruos</a>
+                                    <a class="nav-link" href="#seccion-crud">Monstruos</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#blogs">Blog</a>
@@ -177,7 +178,6 @@
     </footer>
   
 
-
     <!-- Librerias para el funcionamiento de la ventana modal con bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -187,6 +187,12 @@
     <!-- Archivos js propios -->
     <script src="./js/models/Personaje.js"></script>
     <script src="./js/models/Monstruo.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="./js/peticiones/axios.js"></script> -->
+    <!-- <script src="./js/peticiones/fetch.js"></script> -->
+    <script src="./js/peticiones/ajax.js"></script>
+    
     <script src="./js/script.js"></script>
 </body>
 </html>

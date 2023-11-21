@@ -96,6 +96,10 @@
 	padding: 0.5rem;
 }
 
+.filaMonstruo:hover {
+	background-color: #d9d9d9;
+}
+
 .footer {
 	background-color: #2b3134; 
 	color: #7c7f82;
@@ -122,6 +126,10 @@
 	width: 15rem !important; 
 }
 
+td {
+	cursor: pointer;
+}
+
 @media screen and (max-width: 427px) {
 	#contenedor-titulo h1 {
 	  	font-size: 4.2em; 
@@ -133,8 +141,8 @@
 
 	#info-monstruo {
 		padding: 1rem;
-		width: 100px;
-		height: 90vh !important;
+		width: 80vw;
+		height: 95vh !important;
 		margin-top: 13vh !important;
 	}
 	
@@ -148,7 +156,7 @@
 	}
 
 	#div-seccion-monstruos {
-		padding-top: 8vh !important;
+		padding-top: 12vh !important;
 	}
 
 	.labelsInfo {
@@ -156,7 +164,7 @@
 	}
 }
 
-@media screen and (max-width: 1450px) {
+@media screen and (max-width: 1450px) and (min-width: 430px){
 	#contenedor-titulo h1 {
 	  font-size: 4.2em; 
 	}
@@ -169,7 +177,7 @@
 		margin-top: 20vh;
 		padding: 2rem;
 		width: 75vw;
-		height: 97vh;
+		height: 75vh;
 	}
 	
 	#titulo-lista {

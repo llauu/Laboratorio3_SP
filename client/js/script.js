@@ -1,5 +1,5 @@
+// Cargo los tipos de monstruos en el select
 const tipos = ["Esqueleto", "Zombie", "Vampiro", "Fantasma", "Bruja", "Hombre lobo"];
-
 const $selTipo = document.getElementById("selTipo");
 
 tipos.forEach((tipo) => {
@@ -18,29 +18,94 @@ const $txtAlias = document.getElementById("txtAlias");
 const $rdDefensas = document.getElementsByName("defensa");
 const $rgMiedo = document.getElementById("rgMiedo");
 
-
-
-
 const $loader = document.getElementById("loader");
 const $btnGuardar = document.getElementById("btnGuardar");
+const $btnCancelar = document.getElementById("btnCancelar");
+const $btnEliminar = document.getElementById("btnEliminar");
+let monstruosCargados = [];
+let idSeleccionado = -1;
+let editando = false;
 
-let monstruosLS = JSON.parse(localStorage.getItem("monstruos"));
 
-if (monstruosLS === null) {
-    // Si no hay ningun monstruo en el LS, inicializo el array y seteo el id en 1
-    monstruosLS = [];
-    localStorage.setItem("ultimoID", 1);
+// Main AJAX y AXIOS
+function Main() {
+    ObtenerMonstruos()
+        .then((monstruosTraidos) => {
+            monstruosCargados = monstruosTraidos;
+
+            CargarMonstruosEnTabla(monstruosCargados);
+    
+            $btnGuardar.addEventListener("click", (e) => {
+                e.preventDefault();
+        
+                if(!editando) {
+                    // Alta
+                    AltaMonstruo(monstruosCargados);
+                }
+                else {
+                    // Modificacion
+                    EditarMonstruo(idSeleccionado);
+                }
+            });
+        
+            $btnEliminar.addEventListener("click", (e) => {
+                e.preventDefault();
+        
+                $loader.classList.remove('oculto');
+                EliminarMonstruo(idSeleccionado);
+            });
+        })
+        .catch((err) => console.error(err));
+} 
+
+// Con fetch y async/await:
+// async function Main() {
+//     // Con fetch:
+//     // monstruosCargados = await ObtenerMonstruos();
+
+//     CargarMonstruosEnTabla(monstruosCargados);
+    
+//     $btnGuardar.addEventListener("click", (e) => {
+//         e.preventDefault();
+
+//         if(!editando) {
+//             // Alta
+//             AltaMonstruo(monstruosCargados);
+//         }
+//         else {
+//             // Modificacion
+//             EditarMonstruo(idSeleccionado);
+//         }
+//     });
+
+//     $btnEliminar.addEventListener("click", (e) => {
+//         e.preventDefault();
+
+//         EliminarMonstruo(idSeleccionado);
+//     });
+// }
+
+
+function ObtenerUltimoId(monstruos) {
+    if(monstruos.length > 0) {
+        return monstruos[monstruos.length - 1].id;
+    }
+    else {
+        return 0;
+    }
 }
-else {
-    // Si hay monstruos en el LS, los cargo en la tabla
-    monstruosLS.forEach((monstruo) => {
-        AgregarMonstruoALaTabla(monstruo);
-    });
+
+
+function CargarMonstruosEnTabla(monstruos) {
+    if(monstruos !== undefined) {
+        monstruos.forEach((monstruo) => {
+            AgregarMonstruoALaTabla(monstruo);
+        });
+    }
 }
 
-$btnGuardar.addEventListener("click", (e) => {
-    e.preventDefault();
 
+function AltaMonstruo(monstruos) {
     let nombre = $txtNombre.value;
     let alias = $txtAlias.value;
     let defensa = ObtenerDefensa();
@@ -48,26 +113,91 @@ $btnGuardar.addEventListener("click", (e) => {
     let tipo = $selTipo.value;
     
     if(VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo)) {
-        const monstruo = new Monstruo(localStorage.getItem("ultimoID"), nombre, alias, defensa, miedo, tipo);
+        $loader.classList.remove('oculto');
+        
+        let id = ObtenerUltimoId(monstruos);
 
-        $loader.classList.remove("oculto");
-    
-        setTimeout(() => {
-            $loader.classList.add("oculto");
-            console.log('Monstruo guardado en el LS');
-            AgregarMonstruoALaTabla(monstruo);
-        }, 2000);
-    
-        monstruosLS.push(monstruo);
-    
-        localStorage.setItem("monstruos", JSON.stringify(monstruosLS));
-        localStorage.setItem("ultimoID", Number(localStorage.getItem("ultimoID")) + 1);
+        const monstruo = new Monstruo(id + 1, nombre, alias, defensa, miedo, tipo);
+
+        CargarMonstruo(monstruo);
     }
     else {
         console.log('Campos no validos.');
         MostrarErrorModal();
     }
-});
+}
+
+
+function EditarMonstruo(idSeleccionado) {
+    let nombre = $txtNombre.value;
+    let alias = $txtAlias.value;
+    let defensa = ObtenerDefensa();
+    let miedo = $rgMiedo.value;
+    let tipo = $selTipo.value;
+    
+    if(VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo)) {
+        $loader.classList.remove('oculto');
+        
+        const monstruo = new Monstruo(idSeleccionado, nombre, alias, defensa, miedo, tipo);
+        
+        ModificarMonstruo(monstruo);
+    }
+    else {
+        console.log('Campos no validos.');
+        MostrarErrorModal();
+    }
+}
+
+
+function SeleccionarMonstruo(fila) {
+    if(!editando) {
+        editando = true;
+
+        const $nombre = fila.childNodes[0].textContent;
+        const $alias = fila.childNodes[1].textContent;
+        const $defensa = fila.childNodes[2].textContent;
+        const $miedo = fila.childNodes[3].textContent;
+        const $tipo = fila.childNodes[4].textContent;
+        
+        $txtNombre.value = $nombre;
+        $txtAlias.value = $alias;
+        $rgMiedo.value = $miedo;
+        $selTipo.value = $tipo;
+    
+        $rdDefensas.forEach((defensa) => { 
+            if(defensa.value === $defensa) {
+                defensa.checked = true;
+            }
+        });
+    
+        $btnGuardar.textContent = "Editar";
+        $btnCancelar.classList.remove("oculto");
+        $btnEliminar.classList.remove("oculto");
+
+        idSeleccionado = ObtenerIdMonstruoSeleccionado(monstruosCargados, $nombre, $alias, $defensa, $miedo, $tipo);
+        
+        $btnCancelar.addEventListener("click", (e) => {
+            editando = false;
+            $btnGuardar.textContent = "Guardar";
+            $btnCancelar.classList.add("oculto");
+            $btnEliminar.classList.add("oculto");
+        });
+    }
+}
+
+
+function ObtenerIdMonstruoSeleccionado(monstruos, nombre, alias, defensa, miedo, tipo) {
+    let id = -1;
+
+    monstruos.forEach((monstruo) => {
+        if(monstruo.nombre == nombre && monstruo.alias == alias && monstruo.defensa == defensa && monstruo.miedo == miedo && monstruo.tipo == tipo) {
+            id = monstruo.id;
+        }
+    });
+
+    return id;
+}
+
 
 function MostrarErrorModal() {
     $('#modalAviso').modal('show');
@@ -78,6 +208,7 @@ function MostrarErrorModal() {
         $('#modalAviso').modal('hide');
     });
 }
+
 
 function ObtenerDefensa() {
     let defensaSeleccionada = null;
@@ -90,6 +221,7 @@ function ObtenerDefensa() {
 
     return defensaSeleccionada;
 }
+
 
 function VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo) {
     if(nombre === "") {
@@ -114,6 +246,7 @@ function VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo) {
 
     return true;
 }
+
 
 function AgregarMonstruoALaTabla(monstruo) {
     const $tabla = document.getElementById("tablaMonstruos");
@@ -146,4 +279,16 @@ function AgregarMonstruoALaTabla(monstruo) {
     $fila.appendChild($tipo);
 
     $tabla.appendChild($fila);
+
+    $fila.addEventListener("click", () => {
+        SeleccionarMonstruo($fila);
+        
+        // Esto hace que cuando se seleccione un monstruo, se haga scroll hasta el formulario
+        document.body.scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
+
+window.onload = () => {
+    Main();
 }

@@ -1,11 +1,14 @@
 
-let monstruosLS = JSON.parse(localStorage.getItem("monstruos"));
+function CargarMonstruosEnTarjetas() {
+    ObtenerMonstruos()
+        .then((monstruosTraidos) => {
+            let monstruosCargados = monstruosTraidos;
 
-if(monstruosLS !== null) {
-    monstruosLS.forEach((monstruo) => {
-        //Cargamos las tajetas de los monstruos
-        AgregarTarjetaMonstruo(monstruo);
-    });
+            monstruosCargados.forEach(monstruo => {
+                AgregarTarjetaMonstruo(monstruo);
+            })
+        })
+        .catch((err) => console.error(err));
 }
 
 function AgregarTarjetaMonstruo(monstruo) {
@@ -48,3 +51,5 @@ function AgregarTarjetaMonstruo(monstruo) {
     $card.appendChild($cardBody);
     $containerCards.appendChild($card);
 }
+
+CargarMonstruosEnTarjetas();
