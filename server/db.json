@@ -2,27 +2,27 @@
   "monstruos": [
     {
       "id": 1,
-      "nombre": "Dracula",
-      "tipo": "Vampiro",
-      "defensa": "crucifijo",
-      "miedo": "79",
-      "alias": "Conde"
+      "nombre": "dqwd",
+      "tipo": "Esqueleto",
+      "defensa": "plata",
+      "miedo": "83",
+      "alias": "dqw"
     },
     {
       "id": 2,
-      "nombre": "Zumbidito",
-      "tipo": "Zombie",
-      "defensa": "pocion",
-      "miedo": "12",
-      "alias": "Zozo"
+      "nombre": "lauti",
+      "tipo": "Esqueleto",
+      "defensa": "plata",
+      "miedo": "81",
+      "alias": "fdffq"
     },
     {
       "id": 3,
-      "nombre": "Lalo",
-      "tipo": "Esqueleto",
-      "defensa": "pocion",
-      "miedo": "84",
-      "alias": "Lilo"
+      "nombre": "lalal",
+      "tipo": "Fantasma",
+      "defensa": "estaca",
+      "miedo": "23",
+      "alias": "jijio"
     }
   ]
 }

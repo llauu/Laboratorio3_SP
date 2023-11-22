@@ -1,3 +1,4 @@
+const URL = 'http://localhost:3000/monstruos';
 
 function CargarMonstruosEnTarjetas() {
     ObtenerMonstruos()

@@ -89,7 +89,6 @@
 .filaMonstruo {
 	background-color: #f0f0f0;
 	color: #2b3134;
-	border: 1px solid #2b3134;
 }
 
 .filaMonstruo td {
@@ -128,6 +127,10 @@
 
 td {
 	cursor: pointer;
+}
+
+#filtrarColumnas {
+	background-color: #2b3134;
 }
 
 @media screen and (max-width: 427px) {

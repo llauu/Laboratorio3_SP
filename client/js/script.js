@@ -3,14 +3,14 @@ const tipos = ["Esqueleto", "Zombie", "Vampiro", "Fantasma", "Bruja", "Hombre lo
 const $selTipo = document.getElementById("selTipo");
 
 tipos.forEach((tipo) => {
-    const $select = document.createElement("option");
-    const $selTipoTxt = document.createTextNode(tipo);
-  
-    $select.setAttribute("value", tipo);
-    $select.setAttribute("text", tipo);
-    
-    $select.appendChild($selTipoTxt);
-    $selTipo.appendChild($select);
+const $select = document.createElement("option");
+const $selTipoTxt = document.createTextNode(tipo);
+
+$select.setAttribute("value", tipo);
+$select.setAttribute("text", tipo);
+
+$select.appendChild($selTipoTxt);
+$selTipo.appendChild($select);
 });
 
 const $txtNombre = document.getElementById("txtNombre");
@@ -26,15 +26,17 @@ let monstruosCargados = [];
 let idSeleccionado = -1;
 let editando = false;
 
+const $selFiltrarTipo = document.getElementById("selFiltrarTipo");
+const $txtPromedioMiedo = document.getElementById("txtPromedioMiedo");
+const $filtrarColumnas = document.getElementById("filtrarColumnas");
 
-// Main AJAX y AXIOS
 function Main() {
     ObtenerMonstruos()
         .then((monstruosTraidos) => {
             monstruosCargados = monstruosTraidos;
 
             CargarMonstruosEnTabla(monstruosCargados);
-    
+
             $btnGuardar.addEventListener("click", (e) => {
                 e.preventDefault();
         
@@ -58,52 +60,50 @@ function Main() {
         .catch((err) => console.error(err));
 } 
 
-// Con fetch y async/await:
-// async function Main() {
-//     // Con fetch:
-//     // monstruosCargados = await ObtenerMonstruos();
-
-//     CargarMonstruosEnTabla(monstruosCargados);
-    
-//     $btnGuardar.addEventListener("click", (e) => {
-//         e.preventDefault();
-
-//         if(!editando) {
-//             // Alta
-//             AltaMonstruo(monstruosCargados);
-//         }
-//         else {
-//             // Modificacion
-//             EditarMonstruo(idSeleccionado);
-//         }
-//     });
-
-//     $btnEliminar.addEventListener("click", (e) => {
-//         e.preventDefault();
-
-//         EliminarMonstruo(idSeleccionado);
-//     });
-// }
-
-
 function ObtenerUltimoId(monstruos) {
-    if(monstruos.length > 0) {
-        return monstruos[monstruos.length - 1].id;
+    if(monstruos != undefined) {
+        console.log(`Ultimo id: ${monstruos.length}`);
+        return monstruos.length;
     }
     else {
         return 0;
     }
 }
 
-
 function CargarMonstruosEnTabla(monstruos) {
-    if(monstruos !== undefined) {
+    let tipoFiltra = $selFiltrarTipo.value;
+    $txtPromedioMiedo.value = 0;
+    
+    // Elimino los monstruos q ya estan cargados
+    const $tbody = document.getElementById("tbodyMonstruos");
+
+    while($tbody.lastChild) {
+        $tbody.removeChild($tbody.lastChild);
+    }
+    
+    OrdenarMonstruosPorMiedo(monstruos);
+
+    if(tipoFiltra === "Todos") {
         monstruos.forEach((monstruo) => {
             AgregarMonstruoALaTabla(monstruo);
         });
+        
+        if(monstruos.length > 0) {
+            $txtPromedioMiedo.value = CalcularPromedioMiedo(monstruos);
+        }
+    }
+    else {
+        const monstruosFiltrados = FiltrarMonstruosPorTipo(monstruos, tipoFiltra);
+
+        monstruosFiltrados.forEach((monstruo) => {
+            AgregarMonstruoALaTabla(monstruo);
+        });
+
+        if(monstruosFiltrados.length > 0) {
+            $txtPromedioMiedo.value = CalcularPromedioMiedo(monstruosFiltrados);
+        }
     }
 }
-
 
 function AltaMonstruo(monstruos) {
     let nombre = $txtNombre.value;
@@ -111,7 +111,7 @@ function AltaMonstruo(monstruos) {
     let defensa = ObtenerDefensa();
     let miedo = $rgMiedo.value;
     let tipo = $selTipo.value;
-    
+
     if(VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo)) {
         $loader.classList.remove('oculto');
         
@@ -134,7 +134,7 @@ function EditarMonstruo(idSeleccionado) {
     let defensa = ObtenerDefensa();
     let miedo = $rgMiedo.value;
     let tipo = $selTipo.value;
-    
+
     if(VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo)) {
         $loader.classList.remove('oculto');
         
@@ -163,13 +163,13 @@ function SeleccionarMonstruo(fila) {
         $txtAlias.value = $alias;
         $rgMiedo.value = $miedo;
         $selTipo.value = $tipo;
-    
+
         $rdDefensas.forEach((defensa) => { 
             if(defensa.value === $defensa) {
                 defensa.checked = true;
             }
         });
-    
+
         $btnGuardar.textContent = "Editar";
         $btnCancelar.classList.remove("oculto");
         $btnEliminar.classList.remove("oculto");
@@ -212,7 +212,7 @@ function MostrarErrorModal() {
 
 function ObtenerDefensa() {
     let defensaSeleccionada = null;
-    
+
     $rdDefensas.forEach((defensa) => {
         if(defensa.checked) {
             defensaSeleccionada = defensa.value;
@@ -249,7 +249,7 @@ function VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo) {
 
 
 function AgregarMonstruoALaTabla(monstruo) {
-    const $tabla = document.getElementById("tablaMonstruos");
+    const $tbody = document.getElementById("tbodyMonstruos");
     const $fila = document.createElement("tr");
 
     $fila.classList.add("filaMonstruo");
@@ -278,7 +278,7 @@ function AgregarMonstruoALaTabla(monstruo) {
     $fila.appendChild($miedo);
     $fila.appendChild($tipo);
 
-    $tabla.appendChild($fila);
+    $tbody.appendChild($fila);  
 
     $fila.addEventListener("click", () => {
         SeleccionarMonstruo($fila);
@@ -288,7 +288,66 @@ function AgregarMonstruoALaTabla(monstruo) {
     });
 }
 
+function FiltrarMonstruosPorTipo(monstruos, tipo) {
+    const monstruosFiltrados = monstruos.filter((monstruo) => monstruo.tipo === tipo);
 
+    return monstruosFiltrados;
+}
+
+function CalcularPromedioMiedo(monstruos) {
+    let promedio = 0;
+
+    monstruos.forEach((monstruo) => {
+        promedio += parseInt(monstruo.miedo);
+    });
+
+    promedio /= monstruos.length;
+
+    return promedio;
+}
+
+
+function OrdenarMonstruosPorMiedo(monstruos) {
+    monstruos.sort((m1, m2) => m2.miedo - m1.miedo);
+}
+
+
+$selFiltrarTipo.addEventListener('change', function() {
+    CargarMonstruosEnTabla(monstruosCargados);
+});
+
+
+$filtrarColumnas.addEventListener('change', function() {
+    let checkboxes = document.querySelectorAll('#filtrarColumnas input[type="checkbox"]');
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+                let filas = document.getElementsByClassName("filaMonstruo");
+                
+                for (let j = 0; j < filas.length; j++) {
+                    filas[j].childNodes[i].classList.add('oculto');;
+                }
+
+                document.getElementsByTagName("td")[i].classList.add('oculto');
+        }
+        else {
+            let filas = document.getElementsByClassName("filaMonstruo");
+            
+            for (let j = 0; j < filas.length; j++) {
+                filas[j].childNodes[i].classList.remove('oculto');;
+            }
+
+            document.getElementsByTagName("td")[i].classList.remove('oculto');
+        }
+    }
+});
+
+
+// -------------------------------------------------------
 window.onload = () => {
     Main();
 }
+
+
+
+

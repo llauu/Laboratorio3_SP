@@ -51,16 +51,16 @@
                 <h3 id="titulo-info" class="text-center mb-4">Informacion del monstruo</h3>
                 <form>
                     <div class="mb-3">
-                      <label for="txtNombre" class="form-label">Nombre</label>
+                      <label for="txtNombre" class="form-label"><i class="fa-solid fa-pen me-1"></i>Nombre</label>
                       <input type="text" class="form-control" id="txtNombre">
                     </div>
 
                     <div class="mb-3">
-                      <label for="txtAlias" class="form-label">Alias</label>
+                      <label for="txtAlias" class="form-label"><i class="fa-solid fa-tag me-1"></i>Alias</label>
                       <input type="text" class="form-control" id="txtAlias">
                     </div>
 
-                    <label for="defensa" class="form-label">Defensa</label>
+                    <label for="defensa" class="form-label"><i class="fa-solid fa-shield me-1"></i>Defensa</label>
                     <div class="container">
                         <div class="row mb-3">
                             <div class="form-check col-6 col-sm-3">
@@ -90,10 +90,10 @@
                         </div>
                     </div>
 
-                    <label for="rgMiedo" class="form-label">Miedo</label>
+                    <label for="rgMiedo" class="form-label"><i class="fa-solid fa-eye me-1"></i>Miedo</label>
                     <input type="range" class="form-range mb-3" id="rgMiedo" name="miedo" min="0" max="100" >
 
-                    <label for="selTipo" class="mb-3">Tipo</label>
+                    <label for="selTipo" class="mb-3"><i class="fa-solid fa-poo me-1"></i>Tipo</label>
                     <select class="form-select mb-4" id="selTipo" aria-label="Selecciona">
                         <!-- CARGAR DINAMICAMENTE DESDE JS -->
                     </select>
@@ -132,14 +132,53 @@
         <section id="seccion-monstruos">
             <div id="div-seccion-monstruos" class="container col-10 d-flex flex-column align-items-center">
                 <h2 id="titulo-lista" class="mt-0">Monstruos cargados</h2>
+                <div class="container d-flex justify-content-around mt-3">
+                    <div class="row col-5">
+                        <label for="selFiltrarTipo" class="mb-3">Filtrar tipo</label>
+                        <select name="form-select" id="selFiltrarTipo">
+                            <option value="Todos">Todos</option>
+                            <option value="Vampiro">Vampiro</option>
+                            <option value="Hombre lobo">Hombre lobo</option>
+                            <option value="Fantasma">Fantasma</option>
+                            <option value="Esqueleto">Esqueleto</option>
+                            <option value="Bruja">Bruja</option>
+                            <option value="Zombie">Zombie</option>
+                        </select>
+                    </div>
+                    <div class="row col-5">
+                        <label for="txtPromedioMiedo" class="form-label">Promedio miedo</label>
+                        <input type="text" readonly id="txtPromedioMiedo">
+                    </div>
+                </div>
+                
+                <div class="btn-group mt-3" role="group" aria-label="Basic checkbox toggle button group" id="filtrarColumnas">
+                    <input type="checkbox" class="btn-check" id="btncheckNombre" value="Nombre" autocomplete="on">
+                    <label class="btn btn-outline-secondary" for="btncheckNombre">Nombre</label>
+                  
+                    <input type="checkbox" class="btn-check" id="btncheckAlias" value="Alias" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btncheckAlias">Alias</label>
+                  
+                    <input type="checkbox" class="btn-check" id="btncheckDefensa" value="Defensa" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btncheckDefensa">Defensa</label>
+
+                    <input type="checkbox" class="btn-check" id="btncheckMiedo" value="Miedo" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btncheckMiedo">Miedo</label>
+
+                    <input type="checkbox" class="btn-check" id="btncheckTipo" value="Tipo" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btncheckTipo">Tipo</label>
+                </div>
+
                 <table id="tablaMonstruos" class="table table-dark w-100 my-5">
-                    <tr>
-                        <td class="cabezera">Nombre</td>
-                        <td class="cabezera">Alias</td>
-                        <td class="cabezera">Defensa</td>
-                        <td class="cabezera">Miedo</td>
-                        <td class="cabezera">Tipo</td>
-                    </tr>
+                    <thead>
+                        <td class="cabecera">Nombre</td>
+                        <td class="cabecera">Alias</td>
+                        <td class="cabecera">Defensa</td>
+                        <td class="cabecera">Miedo</td>
+                        <td class="cabecera">Tipo</td>
+                    </thead>
+                    <tbody id="tbodyMonstruos" class="table-light">
+
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -188,9 +227,9 @@
     <script src="./js/models/Personaje.js"></script>
     <script src="./js/models/Monstruo.js"></script>
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-    <script src="./js/peticiones/axios.js"></script> -->
-    <!-- <script src="./js/peticiones/fetch.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="./js/peticiones/axios.js"></script>
+    <script src="./js/peticiones/fetch.js"></script>
     <script src="./js/peticiones/ajax.js"></script>
     
     <script src="./js/script.js"></script>
