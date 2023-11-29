@@ -23,6 +23,22 @@
       "defensa": "estaca",
       "miedo": "23",
       "alias": "jijio"
+    },
+    {
+      "id": 4,
+      "nombre": "monstrui",
+      "tipo": "Vampiro",
+      "defensa": "crucifijo",
+      "miedo": "24",
+      "alias": "juj"
+    },
+    {
+      "nombre": "Rompe",
+      "tipo": "Fantasma",
+      "defensa": "pocion",
+      "miedo": "7",
+      "alias": "Mordi",
+      "id": 5
     }
   ]
 }

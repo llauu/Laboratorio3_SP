@@ -3,14 +3,14 @@ const tipos = ["Esqueleto", "Zombie", "Vampiro", "Fantasma", "Bruja", "Hombre lo
 const $selTipo = document.getElementById("selTipo");
 
 tipos.forEach((tipo) => {
-const $select = document.createElement("option");
-const $selTipoTxt = document.createTextNode(tipo);
+    const $select = document.createElement("option");
+    const $selTipoTxt = document.createTextNode(tipo);
 
-$select.setAttribute("value", tipo);
-$select.setAttribute("text", tipo);
+    $select.setAttribute("value", tipo);
+    $select.setAttribute("text", tipo);
 
-$select.appendChild($selTipoTxt);
-$selTipo.appendChild($select);
+    $select.appendChild($selTipoTxt);
+    $selTipo.appendChild($select);
 });
 
 const $txtNombre = document.getElementById("txtNombre");
@@ -42,7 +42,7 @@ function Main() {
         
                 if(!editando) {
                     // Alta
-                    AltaMonstruo(monstruosCargados);
+                    AltaMonstruo();
                 }
                 else {
                     // Modificacion
@@ -60,16 +60,6 @@ function Main() {
         .catch((err) => console.error(err));
 } 
 
-function ObtenerUltimoId(monstruos) {
-    if(monstruos != undefined) {
-        console.log(`Ultimo id: ${monstruos.length}`);
-        return monstruos.length;
-    }
-    else {
-        return 0;
-    }
-}
-
 function CargarMonstruosEnTabla(monstruos) {
     let tipoFiltra = $selFiltrarTipo.value;
     $txtPromedioMiedo.value = 0;
@@ -80,7 +70,7 @@ function CargarMonstruosEnTabla(monstruos) {
     while($tbody.lastChild) {
         $tbody.removeChild($tbody.lastChild);
     }
-    
+
     OrdenarMonstruosPorMiedo(monstruos);
 
     if(tipoFiltra === "Todos") {
@@ -105,7 +95,7 @@ function CargarMonstruosEnTabla(monstruos) {
     }
 }
 
-function AltaMonstruo(monstruos) {
+function AltaMonstruo() {
     let nombre = $txtNombre.value;
     let alias = $txtAlias.value;
     let defensa = ObtenerDefensa();
@@ -114,10 +104,8 @@ function AltaMonstruo(monstruos) {
 
     if(VerificarMonstruoValido(nombre, alias, defensa, miedo, tipo)) {
         $loader.classList.remove('oculto');
-        
-        let id = ObtenerUltimoId(monstruos);
 
-        const monstruo = new Monstruo(id + 1, nombre, alias, defensa, miedo, tipo);
+        const monstruo = new Monstruo(nombre, alias, defensa, miedo, tipo);
 
         CargarMonstruo(monstruo);
     }
@@ -347,7 +335,3 @@ $filtrarColumnas.addEventListener('change', function() {
 window.onload = () => {
     Main();
 }
-
-
-
-
